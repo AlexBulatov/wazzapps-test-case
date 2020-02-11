@@ -1,0 +1,25 @@
+version: '3'
+services:
+  flaskapp:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    networks:
+      - db_nw
+    
+    environment:
+      - FLASK_ACCESS_KEY = 1e6b82af4edf0577aaa36b15a0994423
+      - DATABASE_URL = postgresql://postgres@db_nw:5432/currencies
+  db:
+    image: "postgres:10"
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    networks:
+      - db_nw
+networks:
+  db_nw:
+    driver: bridge
+volumes:
+  dbdata:
